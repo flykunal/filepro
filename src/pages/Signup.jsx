@@ -1,37 +1,46 @@
 import { useState } from "react";
 
 function Signup() {
-
   const [user, setUser] = useState({
     username: "",
     email: "",
-    password: ""
+    password: "",
   });
 
   const [message, setMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setUser({
       ...user,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:8080/patients/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(user)
-    });
+    try {
+      setSubmitting(true);
+      setMessage("");
 
-    if (response.ok) {
-      setMessage("Signup Successful ✅");
-    } else {
-      setMessage("Signup Failed ❌");
+      const response = await fetch("http://localhost:8080/patients/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+
+      if (response.ok) {
+        setMessage("Signup successful.");
+      } else {
+        setMessage(`Signup failed (status: ${response.status}).`);
+      }
+    } catch {
+      setMessage("Network/server error during signup.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -47,7 +56,8 @@ function Signup() {
           onChange={handleChange}
           required
         />
-        <br /><br />
+        <br />
+        <br />
 
         <input
           type="email"
@@ -56,7 +66,8 @@ function Signup() {
           onChange={handleChange}
           required
         />
-        <br /><br />
+        <br />
+        <br />
 
         <input
           type="password"
@@ -65,9 +76,12 @@ function Signup() {
           onChange={handleChange}
           required
         />
-        <br /><br />
+        <br />
+        <br />
 
-        <button type="submit">Register</button>
+        <button type="submit" disabled={submitting}>
+          {submitting ? "Registering..." : "Register"}
+        </button>
       </form>
 
       <p>{message}</p>

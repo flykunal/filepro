@@ -1,22 +1,19 @@
 import { useState } from "react";
 
 function Upload({ fetchPatients }) {
-
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleUpload = async (event) => {
-
     const file = event.target.files[0];
 
     if (!file) {
-      setMessage("Please select a file ❗");
+      setMessage("Please select a file.");
       return;
     }
 
-    // ✅ Allow only .xlsx
     if (!file.name.endsWith(".xlsx")) {
-      setMessage("Only .xlsx files are allowed ❌");
+      setMessage("Only .xlsx files are allowed.");
       return;
     }
 
@@ -25,40 +22,38 @@ function Upload({ fetchPatients }) {
 
     try {
       setLoading(true);
-      setMessage("Uploading... ⏳");
+      setMessage("Uploading...");
 
       const response = await fetch("http://localhost:8080/patients/upload", {
         method: "POST",
-        body: formData
+        body: formData,
       });
 
       if (response.ok) {
-        setMessage("File uploaded successfully ✅");
-        
-        // Refresh patient list after upload
+        setMessage("File uploaded successfully.");
+
         if (fetchPatients) {
           fetchPatients();
         }
-
       } else {
-        setMessage("Upload failed ❌");
+        setMessage(`Upload failed (status: ${response.status}).`);
       }
-
-    } catch (error) {
-      setMessage("Server error ❌");
+    } catch {
+      setMessage("Network/server error during upload.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div style={{
-      border: "1px solid #ccc",
-      padding: "20px",
-      margin: "20px",
-      borderRadius: "8px"
-    }}>
-
+    <div
+      style={{
+        border: "1px solid #ccc",
+        padding: "20px",
+        margin: "20px",
+        borderRadius: "8px",
+      }}
+    >
       <h3>Upload Patient Excel File</h3>
 
       <input
@@ -70,7 +65,6 @@ function Upload({ fetchPatients }) {
       <p style={{ marginTop: "10px", fontWeight: "bold" }}>
         {loading ? "Processing..." : message}
       </p>
-
     </div>
   );
 }
