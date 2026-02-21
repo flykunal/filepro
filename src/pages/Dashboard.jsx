@@ -4,11 +4,21 @@ import PatientTable from "../components/PatientTable";
 
 function Dashboard({ user }) {
   return (
-    <>
+    <div className="dashboard-page">
       <Navbar user={user} />
-      <Upload />
-      <PatientTable />
-    </>
+
+      <main className="dashboard-main">
+        <section className="dashboard-card">
+          <h2 className="section-title">Upload Records</h2>
+          <Upload />
+        </section>
+
+        <section className="dashboard-card">
+          <h2 className="section-title">Patient Records</h2>
+          <PatientTable />
+        </section>
+      </main>
+    </div>
   );
 }
 

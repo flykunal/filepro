@@ -46,25 +46,15 @@ function Upload({ fetchPatients }) {
   };
 
   return (
-    <div
-      style={{
-        border: "1px solid #ccc",
-        padding: "20px",
-        margin: "20px",
-        borderRadius: "8px",
-      }}
-    >
-      <h3>Upload Patient Excel File</h3>
-
+    <div className="upload-panel">
+      <p className="upload-note">Upload patient data file (.xlsx)</p>
       <input
+        className="upload-input"
         type="file"
         accept=".xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
         onChange={handleUpload}
       />
-
-      <p style={{ marginTop: "10px", fontWeight: "bold" }}>
-        {loading ? "Processing..." : message}
-      </p>
+      <p className="status-text">{loading ? "Processing..." : message}</p>
     </div>
   );
 }

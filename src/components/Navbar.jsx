@@ -1,11 +1,9 @@
 function Navbar({ user }) {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", padding: "10px", background: "#222", color: "white" }}>
-      <h3>Patient Management System</h3>
-      <div>
-        👤 {user}
-      </div>
-    </div>
+    <header className="dashboard-navbar">
+      <h1 className="app-title">Patient Management System</h1>
+      <p className="user-label">User: {user || "Guest"}</p>
+    </header>
   );
 }
 
